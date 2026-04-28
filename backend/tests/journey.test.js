@@ -10,7 +10,11 @@ jest.mock('firebase-admin', () => ({
     auth: jest.fn(() => ({
         verifyIdToken: jest.fn().mockResolvedValue({ uid: 'testUser' })
     })),
-    firestore: jest.fn(() => ({}))
+    firestore: jest.fn(() => ({
+        collection: jest.fn(() => ({
+            add: jest.fn().mockResolvedValue(true)
+        }))
+    }))
 }));
 
 // Mock the AI Agents to prevent hitting real API limits

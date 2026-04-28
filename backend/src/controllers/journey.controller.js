@@ -1,6 +1,7 @@
 const GuidanceAgent = require('../agents/GuidanceAgent');
 const TimelineAgent = require('../agents/TimelineAgent');
 const { sendSuccess, sendError } = require('../utils/response.util');
+const { db } = require('../utils/firebase'); // Import Firestore
 
 // Basic in-memory cache for efficiency (could be moved to a Redis store in the future)
 const journeyCache = new Map();
@@ -8,6 +9,7 @@ const journeyCache = new Map();
 /**
  * Controller to handle the generation of a personalized voting journey.
  * Coordinates input validation, caching, and calling AI agents.
+ * Logs generated journeys to Firestore if available.
  */
 const generateJourney = async (req, res, next) => {
   try {
@@ -65,7 +67,20 @@ const generateJourney = async (req, res, next) => {
     // Save to cache
     journeyCache.set(cacheKey, finalResponse);
 
-    // 6. Return response
+    // 6. Log to Firestore (Google Services Integration)
+    // Runs asynchronously so it doesn't block the API response
+    if (db) {
+      db.collection('journeys').add({
+        userId: req.user ? req.user.uid : 'anonymous',
+        age: parsedAge,
+        location,
+        firstTimeVoter,
+        timestamp: new Date(),
+        nextStep: finalResponse.next_step
+      }).catch(err => console.error('Firestore log error:', err));
+    }
+
+    // 7. Return response
     return sendSuccess(res, finalResponse);
   } catch (error) {
     console.error('Journey generation error:', error);
