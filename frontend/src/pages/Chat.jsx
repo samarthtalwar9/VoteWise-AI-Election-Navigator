@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { MdSend, MdArrowBack } from 'react-icons/md';
+import { auth } from '../firebase';
 
 function Chat({ userData, language }) {
   const [query, setQuery] = useState('');
@@ -17,10 +19,13 @@ function Chat({ userData, language }) {
     setLoading(true);
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/chat` : 'http://localhost:5000/api/chat';
-      const response = await fetch(apiUrl, {
+      const token = auth.currentUser ? await auth.currentUser.getIdToken() : '';
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/chat`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token && { 'Authorization': `Bearer ${token}` })
+        },
         body: JSON.stringify({ 
           query: userMessage.content, 
           context: userData, 

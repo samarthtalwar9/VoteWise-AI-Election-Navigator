@@ -4,13 +4,10 @@ const verifyToken = async (req, res, next) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    // If no Firebase project is configured, allow mock auth for hackathon demo purposes
-    if (!auth) {
-      console.warn('Mocking Auth: Proceeding without valid token (No Firebase Configured)');
-      req.user = { uid: 'mock-user-123' };
-      return next();
-    }
-    return res.status(401).json({ error: 'Unauthorized: No token provided' });
+    // For hackathon demo: If no token provided, just mock auth instead of 401 blocking
+    console.warn('Mocking Auth: Proceeding without valid token');
+    req.user = { uid: 'mock-user-123' };
+    return next();
   }
 
   const idToken = authHeader.split('Bearer ')[1];

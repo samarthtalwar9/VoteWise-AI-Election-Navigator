@@ -6,7 +6,10 @@ const rateLimit = require('express-rate-limit');
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
+
+// Trust proxy for Cloud Run
+app.set('trust proxy', 1);
 
 // Middleware
 app.use(cors());
@@ -23,6 +26,15 @@ app.use('/api', limiter);
 // Basic health check route
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'OK', message: 'VoteWise AI Backend is running' });
+});
+
+// Root route for base URL
+app.get('/', (req, res) => {
+  res.status(200).json({ 
+    message: 'Welcome to VoteWise AI API',
+    endpoints: ['/api/journey', '/api/chat', '/api/timeline'],
+    status: 'Live'
+  });
 });
 
 // Routes

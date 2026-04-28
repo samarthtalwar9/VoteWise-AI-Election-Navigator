@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { auth } from '../firebase';
 
 function Onboarding({ setJourneyData, setUserData, language }) {
   const [age, setAge] = useState('');
   const [location, setLocation] = useState('');
   const [firstTime, setFirstTime] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -21,30 +22,32 @@ function Onboarding({ setJourneyData, setUserData, language }) {
     }
 
     setLoading(true);
-    setError('');
+    setError(null);
 
     const payload = { age: parseInt(age), location, firstTimeVoter: firstTime, language };
-    
+
     try {
-      const apiUrl = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api/journey` : 'http://localhost:5000/api/journey';
-      const response = await fetch(apiUrl, {
+      const token = auth.currentUser ? await auth.currentUser.getIdToken() : '';
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/journey`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token && { 'Authorization': `Bearer ${token}` })
+        },
+        body: JSON.stringify(payload),
       });
-      
-      const data = await response.json();
-      
+
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to fetch journey');
+        throw new Error('Failed to generate journey');
       }
 
+      const data = await response.json();
       setJourneyData(data);
       setUserData(payload);
       navigate('/dashboard');
     } catch (err) {
       console.error(err);
-      setError(err.message || 'Something went wrong. Ensure backend is running.');
+      setError(language === 'English' ? 'Something went wrong. Please try again.' : 'कुछ गलत हो गया। कृपया पुनः प्रयास करें।');
     } finally {
       setLoading(false);
     }
