@@ -1,5 +1,7 @@
 {
   "projects": {
     "default": "virtual-prompt-war-493006"
-  }
+  },
+  "targets": {},
+  "etags": {}
 }

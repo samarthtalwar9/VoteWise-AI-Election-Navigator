@@ -27,7 +27,7 @@ function Onboarding({ setJourneyData, setUserData, language }) {
     const payload = { age: parseInt(age), location, firstTimeVoter: firstTime, language };
 
     try {
-      const token = auth.currentUser ? await auth.currentUser.getIdToken() : '';
+      const token = auth && auth.currentUser ? await auth.currentUser.getIdToken() : '';
       const response = await fetch(`${import.meta.env.VITE_API_URL}/api/journey`, {
         method: 'POST',
         headers: {
@@ -55,20 +55,20 @@ function Onboarding({ setJourneyData, setUserData, language }) {
 
   return (
     <div className="glass-panel animate-fade-in" style={{ marginTop: '40px' }}>
-      <h1 style={{ marginBottom: '16px' }}>
-        {language === 'English' ? 'Welcome to VoteWise AI' : 'VoteWise AI में आपका स्वागत है'}
-      </h1>
-      <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>
-        {language === 'English' 
-          ? 'Enter your details to get a personalized election journey.' 
-          : 'अपना व्यक्तिगत चुनाव यात्रा प्राप्त करने के लिए अपना विवरण दर्ज करें।'}
-      </p>
+      <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+        <h1 style={{ marginBottom: '8px', fontSize: '2.2rem', background: 'linear-gradient(135deg, #fff 0%, #cbd5e1 50%, #94a3b8 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+          🗳️ VoteWise AI
+        </h1>
+        <h3 style={{ color: 'var(--accent-glow)', fontWeight: '500', fontSize: '1.1rem' }}>
+          {language === 'English' ? 'Your personalized election navigator' : 'आपका व्यक्तिगत चुनाव नेविगेटर'}
+        </h3>
+      </div>
 
-      {error && <div style={{ color: 'var(--danger-color)', marginBottom: '16px' }}>{error}</div>}
+      {error && <div style={{ color: 'var(--danger-color)', marginBottom: '16px', background: 'rgba(239, 68, 68, 0.1)', padding: '12px', borderRadius: '8px', borderLeft: '4px solid var(--danger-color)' }}>{error}</div>}
 
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: '16px' }}>
-          <label style={{ display: 'block', marginBottom: '8px' }}>
+          <label style={{ display: 'block', marginBottom: '8px', color: 'var(--text-secondary)', fontSize: '0.95rem' }}>
             {language === 'English' ? 'Age' : 'आयु'}
           </label>
           <input 
@@ -82,7 +82,7 @@ function Onboarding({ setJourneyData, setUserData, language }) {
         </div>
 
         <div style={{ marginBottom: '16px' }}>
-          <label style={{ display: 'block', marginBottom: '8px' }}>
+          <label style={{ display: 'block', marginBottom: '8px', color: 'var(--text-secondary)', fontSize: '0.95rem' }}>
             {language === 'English' ? 'Location (City/State)' : 'स्थान (शहर/राज्य)'}
           </label>
           <input 
@@ -94,15 +94,15 @@ function Onboarding({ setJourneyData, setUserData, language }) {
           />
         </div>
 
-        <div style={{ marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div style={{ marginBottom: '32px', display: 'flex', alignItems: 'center', gap: '12px', background: 'rgba(255,255,255,0.02)', padding: '16px', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}>
           <input 
             type="checkbox" 
             id="firstTime"
+            className="custom-checkbox"
             checked={firstTime}
             onChange={(e) => setFirstTime(e.target.checked)}
-            style={{ width: '18px', height: '18px' }}
           />
-          <label htmlFor="firstTime">
+          <label htmlFor="firstTime" style={{ cursor: 'pointer', color: 'var(--text-primary)' }}>
             {language === 'English' ? 'I am a first-time voter' : 'मैं पहली बार मतदान कर रहा हूँ'}
           </label>
         </div>
