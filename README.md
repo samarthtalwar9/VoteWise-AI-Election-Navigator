@@ -124,14 +124,9 @@ This project is strictly optimized for the Google Cloud & Firebase ecosystem:
 
 ---
 
-## 12. LIVE DEMO
 
-- **Production Backend URL:** [https://votewise-backend-769120791862.us-central1.run.app](https://votewise-backend-769120791862.us-central1.run.app)
-- **Frontend URL:** *(Insert Firebase Hosting URL here after deploying frontend)*
 
----
-
-## 13. FUTURE IMPROVEMENTS
+## 12. FUTURE IMPROVEMENTS
 
 - 🌐 Add support for 10+ regional languages.
 - 🧑‍💻 Advanced personalization utilizing historical voting records.
