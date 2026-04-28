@@ -43,14 +43,11 @@ VoteWise AI is built on a clean, modular **Agent-Based Architecture**:
 
 ---
 
-## 5. GOOGLE SERVICES USED
+## 5. Google Services Integration
 
-This project is strictly optimized for the Google Cloud & Firebase ecosystem:
-
-- 🧠 **Google AI Studio (Gemini 2.5 Flash):** Acts as the core reasoning engine for all Agents, ensuring accurate, structured JSON outputs.
-- 🔐 **Firebase Authentication:** Secures user identity via Google Sign-In and robust JWT token verification.
-- 🗄️ **Firebase Firestore:** (Architecture ready) Designed to store user journeys and timelines statelessly.
-- ☁️ **Google Cloud Run:** The backend is fully dockerized and deployed on Cloud Run for scalable, serverless execution.
+- Google AI Studio (Gemini API) used for reasoning and decision making
+- Firebase used for authentication and Firestore database
+- Google Cloud Run used for scalable backend deployment
 
 ---
 
