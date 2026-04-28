@@ -26,13 +26,17 @@ If the user is under 18, the next step should be about pre-registration or learn
 Respond in the ${language} language. Return ONLY the JSON object, with no markdown formatting or extra text.`;
 
     try {
+      // Invoke the Gemini API with the structured prompt
+      // Using gemini-2.5-flash for the best balance of speed and reasoning
       const response = await ai.models.generateContent({
         model: 'gemini-2.5-flash',
         contents: prompt,
       });
       
+      // Parse the response text to ensure it is valid JSON before returning
       return extractJSON(response.text);
     } catch (error) {
+      // Log the exact AI failure for debugging
       console.error('GuidanceAgent Error:', error);
       throw new Error('Failed to determine next step.');
     }

@@ -64,33 +64,38 @@ function Onboarding({ setJourneyData, setUserData, language }) {
         </h3>
       </div>
 
-      {error && <div style={{ color: 'var(--danger-color)', marginBottom: '16px', background: 'rgba(239, 68, 68, 0.1)', padding: '12px', borderRadius: '8px', borderLeft: '4px solid var(--danger-color)' }}>{error}</div>}
+      {error && <div role="alert" aria-live="assertive" style={{ color: 'var(--danger-color)', marginBottom: '16px', background: 'rgba(239, 68, 68, 0.1)', padding: '12px', borderRadius: '8px', borderLeft: '4px solid var(--danger-color)' }}>{error}</div>}
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} aria-label="Election Onboarding Form">
         <div style={{ marginBottom: '16px' }}>
-          <label style={{ display: 'block', marginBottom: '8px', color: 'var(--text-secondary)', fontSize: '0.95rem' }}>
+          <label htmlFor="ageInput" style={{ display: 'block', marginBottom: '8px', color: 'var(--text-secondary)', fontSize: '0.95rem' }}>
             {language === 'English' ? 'Age' : 'आयु'}
           </label>
           <input 
+            id="ageInput"
             type="number" 
             className="input-field" 
             value={age}
             onChange={(e) => setAge(e.target.value)}
             placeholder={language === 'English' ? 'e.g. 19' : 'उदा. 19'}
             min="0"
+            aria-required="true"
+            aria-invalid={error && error.includes('age') ? "true" : "false"}
           />
         </div>
 
         <div style={{ marginBottom: '16px' }}>
-          <label style={{ display: 'block', marginBottom: '8px', color: 'var(--text-secondary)', fontSize: '0.95rem' }}>
+          <label htmlFor="locationInput" style={{ display: 'block', marginBottom: '8px', color: 'var(--text-secondary)', fontSize: '0.95rem' }}>
             {language === 'English' ? 'Location (City/State)' : 'स्थान (शहर/राज्य)'}
           </label>
           <input 
+            id="locationInput"
             type="text" 
             className="input-field" 
             value={location}
             onChange={(e) => setLocation(e.target.value)}
             placeholder={language === 'English' ? 'e.g. Mumbai' : 'उदा. मुंबई'}
+            aria-required="true"
           />
         </div>
 
@@ -101,13 +106,14 @@ function Onboarding({ setJourneyData, setUserData, language }) {
             className="custom-checkbox"
             checked={firstTime}
             onChange={(e) => setFirstTime(e.target.checked)}
+            aria-label={language === 'English' ? 'First time voter checkbox' : 'पहली बार मतदाता चेकबॉक्स'}
           />
           <label htmlFor="firstTime" style={{ cursor: 'pointer', color: 'var(--text-primary)' }}>
             {language === 'English' ? 'I am a first-time voter' : 'मैं पहली बार मतदान कर रहा हूँ'}
           </label>
         </div>
 
-        <button type="submit" className="btn-primary" disabled={loading}>
+        <button type="submit" className="btn-primary" disabled={loading} aria-busy={loading}>
           {loading 
             ? (language === 'English' ? 'Generating Journey...' : 'यात्रा बना रहा है...') 
             : (language === 'English' ? 'Start Journey' : 'यात्रा शुरू करें')}

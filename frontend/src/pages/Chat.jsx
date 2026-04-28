@@ -93,8 +93,12 @@ function Chat({ userData, language }) {
         </div>
       </div>
 
-      <form onSubmit={handleSend} style={{ display: 'flex', gap: '8px' }}>
+      <form onSubmit={handleSend} style={{ display: 'flex', gap: '8px' }} aria-label="Chat input form">
+        <label htmlFor="chatInput" className="sr-only" style={{ display: 'none' }}>
+          {language === 'English' ? 'Type your question' : 'अपना प्रश्न टाइप करें'}
+        </label>
         <input 
+          id="chatInput"
           type="text" 
           className="input-field" 
           style={{ marginBottom: 0 }}
@@ -102,8 +106,9 @@ function Chat({ userData, language }) {
           onChange={(e) => setQuery(e.target.value)}
           placeholder={language === 'English' ? 'Type your question...' : 'अपना प्रश्न टाइप करें...'}
           disabled={loading}
+          aria-required="true"
         />
-        <button type="submit" className="btn-primary" style={{ width: 'auto' }} disabled={loading}>
+        <button type="submit" className="btn-primary" style={{ width: 'auto' }} disabled={loading} aria-label="Send message">
           {language === 'English' ? 'Send' : 'भेजें'}
         </button>
       </form>

@@ -140,7 +140,7 @@ body {
 }
 
 .input-field::placeholder {
-  color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.6); /* Increased contrast for accessibility */
 }
 
 /* Animations */
