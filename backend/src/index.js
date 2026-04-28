@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const rateLimit = require('express-rate-limit');
+const path = require('path');
 
 dotenv.config();
 
@@ -28,14 +29,8 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: 'OK', message: 'VoteWise AI Backend is running' });
 });
 
-// Root route for base URL
-app.get('/', (req, res) => {
-  res.status(200).json({ 
-    message: 'Welcome to VoteWise AI API',
-    endpoints: ['/api/journey', '/api/chat', '/api/timeline'],
-    status: 'Live'
-  });
-});
+// Serve static frontend files
+app.use(express.static(path.join(__dirname, '../public')));
 
 // Routes
 const journeyRoutes = require('./routes/journey.routes');
@@ -45,6 +40,15 @@ const timelineRoutes = require('./routes/timeline.routes');
 app.use('/api/journey', journeyRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/timeline', timelineRoutes);
+
+// Catch-all route for SPA (React Router)
+app.use((req, res, next) => {
+  if (req.method === 'GET' && !req.path.startsWith('/api/')) {
+    res.sendFile(path.join(__dirname, '../public', 'index.html'));
+  } else {
+    next();
+  }
+});
 
 // Error Handling Middleware
 app.use((err, req, res, next) => {
