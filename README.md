@@ -1,5 +1,5 @@
 # 🗳️ VoteWise AI – Election Navigator
-
+ 
 > **Navigating the election process, simplified and personalized by AI.**
 
 ## 1. PROJECT OVERVIEW
